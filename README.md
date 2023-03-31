@@ -1,6 +1,10 @@
 # Attention Deficit Disorder Detection (ADHD)
 This model accuracy is Validation 93.39%. This model can predict Attention deficit disorder. Here we are using 19 channels EEG signal to train the model.
 
+## Used packages
+* `mne` for signal read, filter and windowing(cutting).
+* `sklearn` for spliting and scaling.
+* `Tensorflow` for modeling.
 
 ## Signal details
 * Frequency 128Hz
