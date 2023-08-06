@@ -39,36 +39,11 @@ import numpy as np
 from sklearn.metrics import confusion_matrix
 
 # Our function needs a different name to sklearn's plot_confusion_matrix
-def make_confusion_matrix(y_true, y_pred, classes=None, figsize=(10, 10), text_size=15, norm=False, savefig=False): 
-  """Makes a labelled confusion matrix comparing predictions and ground truth labels.
-
-  If classes is passed, confusion matrix will be labelled, if not, integer class values
-  will be used.
-
-  Args:
-    y_true: Array of truth labels (must be same shape as y_pred).
-    y_pred: Array of predicted labels (must be same shape as y_true).
-    classes: Array of class labels (e.g. string form). If `None`, integer labels are used.
-    figsize: Size of output figure (default=(10, 10)).
-    text_size: Size of output figure text (default=15).
-    norm: normalize values or not (default=False).
-    savefig: save confusion matrix to file (default=False).
-  
-  Returns:
-    A labelled confusion matrix plot comparing y_true and y_pred.
-
-  Example usage:
-    make_confusion_matrix(y_true=test_labels, # ground truth test labels
-                          y_pred=y_preds, # predicted labels
-                          classes=class_names, # array of class label names
-                          figsize=(15, 15),
-                          text_size=10)
-  """  
+def make_confusion_matrix(y_true, y_pred, classes=None, title="Confusion Matrix Valid Data",figsize=(10, 10), text_size=15, norm=False):
   # Create the confustion matrix
   cm = confusion_matrix(y_true, y_pred)
   cm_norm = cm.astype("float") / cm.sum(axis=1)[:, np.newaxis] # normalize it
   n_classes = cm.shape[0] # find the number of classes we're dealing with
-
   # Plot the figure and make it pretty
   fig, ax = plt.subplots(figsize=figsize)
   cax = ax.matshow(cm, cmap=plt.cm.Blues) # colors will represent how 'correct' a class is, darker == better
@@ -79,17 +54,20 @@ def make_confusion_matrix(y_true, y_pred, classes=None, figsize=(10, 10), text_s
     labels = classes
   else:
     labels = np.arange(cm.shape[0])
-  
+
   # Label the axes
-  ax.set(title="Confusion Matrix",
-         xlabel="Predicted label",
-         ylabel="True label",
-         xticks=np.arange(n_classes), # create enough axis slots for each class
-         yticks=np.arange(n_classes), 
-         xticklabels=labels, # axes will labeled with class names (if they exist) or ints
-         yticklabels=labels)
-  
+  ax.set(title=title,
+          xlabel="Predicted label",
+          ylabel="True label",
+          xticks=np.arange(n_classes), # create enough axis slots for each class
+          yticks=np.arange(n_classes),
+          xticklabels=labels, # axes will labeled with class names (if they exist) or ints
+          yticklabels=labels,
+          )
+
   # Make x-axis labels appear on bottom
+#   ax.tick_params(axis='x', labelrotation=45)
+  ax.tick_params(axis='x', labelrotation=90)
   ax.xaxis.set_label_position("bottom")
   ax.xaxis.tick_bottom()
 
@@ -108,10 +86,8 @@ def make_confusion_matrix(y_true, y_pred, classes=None, figsize=(10, 10), text_s
               horizontalalignment="center",
               color="white" if cm[i, j] > threshold else "black",
               size=text_size)
+  fig.savefig(f"{title}.png")
 
-  # Save the figure to the current working directory
-  if savefig:
-    fig.savefig("confusion_matrix.png")
   
 # Make a function to predict on images and plot them (works with multi-class)
 def pred_and_plot(model, filename, class_names):
@@ -134,7 +110,7 @@ def pred_and_plot(model, filename, class_names):
   # Plot the image and predicted class
   plt.imshow(img)
   plt.title(f"Prediction: {pred_class}")
-  plt.axis(False);
+  plt.axis(False)
   
 import datetime
 
@@ -363,6 +339,27 @@ def saveBestWeightModel(model, weightPath, distination, fileName=None):
   cp_model.load_weights(weightPath)
   """Save the model"""
   cp_model.save(distination)
+  
+  
+# create history  
+class History:
+  
+  def __init__(self, history=None):
+    self.history = {}
+    self.create_history_object(history)
+
+  def create_history_object(self, history):
+    if history:
+      for his in history.history.keys():
+        self.history[his] = history.history[his]
+  
+  def add_history(self, history):
+    if not self.history:
+      self.create_history_object(history)
+      return
+    for his in history.history.keys():
+      self.history[his] += history.history[his]
+
 
 
 
