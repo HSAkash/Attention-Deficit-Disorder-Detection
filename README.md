@@ -1,6 +1,11 @@
 # Attention Deficit Disorder Detection (ADHD)
 This model accuracy is Validation 93.39%. This model can predict Attention deficit disorder. Here we are using 19 channels EEG signal to train the model.
 
+## Dataset description
+* Total person 121
+* Traing person 97 (80%)
+* Validation person 24 (20%)
+
 ## Used packages
 * `mne` for signal read, filter and windowing(cutting).
 * `sklearn` for spliting and scaling.
@@ -11,7 +16,7 @@ This model accuracy is Validation 93.39%. This model can predict Attention defic
 * 19 Channels ['Fz', 'Cz', 'Pz', 'C3', 'T3', 'C4', 'T4', 'Fp1', 'Fp2', 'F3', 'F4', 'F7', 'F8', 'P3', 'P4', 'T5', 'T6', 'O1', 'O2'].
 
 ## Preprocessing the Signals
-We used mne package to read and filter the signal. We using two type filter signal data. Then windowing the signal. We cut the signal, where window size 5 seconds no overlaping. This time the same signal goes to all windows in the same group. Spliting the data by group. Scaling the data using Sklearn StandardScaler.
+We used mne package to read and filter the signal. We using two type filter signal data. Then windowing the signal. We cut the signal, where window size 4 seconds no overlaping. This time the same signal goes to all windows in the same group. Spliting the data by group. Scaling the data using Sklearn StandardScaler.
 ### Filter:
 * First dataset (low pass filter=0, high pass filter=60)
 * Second dataset (low pass filter=1, high pass filter=30)
@@ -35,6 +40,17 @@ Here we used Crononet with some modifications. Our model we used two Crononet. T
 <img src='related_images/Confusion Matrix Validation Data.png ' width="300" height="300"/>
 <img src='related_images/Confusion Matrix.png' width="300" height="300"/>
 <p>
+
+## Person wise Evaluation using Voting Method
+
+### Confusion Matrix of Train data, Validation data and total dataset
+
+<p>
+<img src='related_images/Confusion Matrix Training Person (97).png' width="300" height="300"/>
+<img src='related_images/Confusion Matrix validation Person (24).png' width="300" height="300"/>
+<img src='related_images/Confusion Matrix  Person (121).png' width="300" height="300"/>
+<p>
+
 
 # Requirements
 * joblib 1.3.1
