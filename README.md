@@ -37,6 +37,7 @@ Here we used Crononet with some modifications. Our model we used two Crononet. T
 <p>
 
 # Requirements
+* joblib 1.3.1
 * matplotlib 3.5.2
 * mne 1.3.0
 * numpy 1.23.5
